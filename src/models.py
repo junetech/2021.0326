@@ -136,6 +136,7 @@ def Google_MIP_solve(mdl, problemType, benchmark, computational_time, NThreads, 
 def Google_CP_solve(mdl, problemType, benchmark, computational_time, NThreads, output):
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = computational_time
+    solver.parameters.num_workers = NThreads
     status = solver.Solve(
         mdl
     )  # 0 optimal, 1 feasible, 2 infeasible, 3 unbounded, 4 abnoral, 5 not_solved
