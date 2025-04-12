@@ -1,4 +1,5 @@
 import time
+from pathlib import Path
 
 import cplex
 import numpy as np
@@ -16,7 +17,6 @@ import modelGoogleMIP
 # import xpress as xp
 
 
-
 def main(
     computational_time,
     benchmark,
@@ -28,10 +28,10 @@ def main(
     output,
 ):
     print("\n\n Instance: ", benchmark)
-    print("{}\\{}.txt".format(address, benchmark))
-    instance = datareading.dataentry(
-        "{}\\{}.txt".format(address, benchmark), problemType
-    )  # The OpenStack does not allow subdirectories for instances
+    file_path = Path(address) / f"{benchmark}.txt"
+    print(file_path)
+    instance = datareading.dataentry(file_path, problemType)
+    # The OpenStack does not allow subdirectories for instances
 
     time_start = time.perf_counter()
 
@@ -157,7 +157,8 @@ def Gurobi_solve(mdl, problemType, benchmark, computational_time, NThreads, outp
     mdl.optimize()
     if mdl.status != 1:
         with open(
-            "{}\\solution_MIP_Gurobi_{}_{}.txt".format(output, problemType, benchmark),
+            Path(output)
+            / "solution_MIP_Gurobi_{}_{}.txt".format(problemType, benchmark),
             "w",
         ) as Allc:
             Allc.write(
@@ -203,7 +204,8 @@ def CPLEX_MIP_solve(mdl, problemType, benchmark, computational_time, NThreads, o
     ):
         # print(mdl.solution.MIP.get_best_objective(),mdl.solution.get_objective_value())
         with open(
-            "{}\\solution_MIP_CPLEX_{}_{}.txt".format(output, problemType, benchmark),
+            Path(output)
+            / "solution_MIP_CPLEX_{}_{}.txt".format(problemType, benchmark),
             "w",
         ) as Allc:
             Allc.write(
@@ -242,11 +244,11 @@ def CPLEX_CP_solve(
         OptimalityTolerance=0.99,
         RelativeOptimalityTolerance=0.0,
     )  # solving
-    if msol.solution.is_empty() == False:
+    if not msol.solution.is_empty():
         print(msol.get_objective_bounds())
         # msol.print_solution()
         with open(
-            "{}\\solution_CP_CPLEX_{}_{}.txt".format(output, problemType, benchmark),
+            Path(output) / "solution_CP_CPLEX_{}_{}.txt".format(problemType, benchmark),
             "w",
         ) as Allc:
             Allc.write(

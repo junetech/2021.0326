@@ -1,6 +1,5 @@
-import datetime as dt
-import os
 import sys
+from pathlib import Path
 
 import models
 
@@ -15,7 +14,6 @@ try:
     computational_time = sys.argv[3]
     First = sys.argv[4]
     Last = sys.argv[5]
-
 except:
     problem_name = "Parallelmachine"
     modelType = "CP"
@@ -33,15 +31,18 @@ try:
 except:
     NThreads = 4
 
-try:
-    address = sys.argv[8]
-except:
-    address = "..\\Instances\\{}".format(problem_name)  # os.path.dirname(__file__)
+current_dir = Path()
 
 try:
-    output = sys.argv[9]
+    address = Path(sys.argv[8])
 except:
-    output = "..\\Results"  # os.path.dirname(__file__)
+    address = current_dir.parent / "Instances" / problem_name
+
+try:
+    output = Path(sys.argv[9])
+except:
+    output = current_dir.parent / "Results"
+output.mkdir(parents=True, exist_ok=True)
 
 
 for benchmark in range(int(First), int(Last) + 1):
@@ -75,8 +76,9 @@ for benchmark in range(int(First), int(Last) + 1):
             output,
         )
         result = open(
-            "{}\\result_{}_{}_{}_{}_{}.txt".format(
-                output, modelType, problem_name, computational_time, NThreads, benchmark
+            Path(output)
+            / "result_{}_{}_{}_{}_{}.txt".format(
+                modelType, problem_name, computational_time, NThreads, benchmark
             ),
             "a",
         )
@@ -88,8 +90,9 @@ for benchmark in range(int(First), int(Last) + 1):
         result.close()
     except:
         result = open(
-            "{}\\result_{}_{}_{}_{}_{}.txt".format(
-                output, modelType, problem_name, computational_time, NThreads, benchmark
+            Path(output)
+            / "result_{}_{}_{}_{}_{}.txt".format(
+                modelType, problem_name, computational_time, NThreads, benchmark
             ),
             "a",
         )
