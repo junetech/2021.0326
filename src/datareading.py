@@ -54,7 +54,32 @@ def dataentry(filename, problemType: str) -> struct:
         instance.n = int(data.readline().strip().split()[0])
         instance.g = int(data.readline().strip().split()[0])
 
-        if problemType == "Flexiblejobshop":
+        if problemType != "Flexiblejobshop":
+            if problemType == "Distributedflowshop":
+                instance.f = int(data.readline().strip().split()[0])
+
+            if problemType == "Hybridflowshop":
+                instance.m = read_ints(data)
+
+            if problemType == "Tardinessflowshop":
+                instance.d = read_ints(data)
+
+            instance.p = [read_ints(data)]
+            for j in range(instance.n - 1):
+                instance.p.append(read_ints(data))
+
+            if problemType == "Setupflowshop":
+                for i in range(instance.g):
+                    instance.s.append([])
+                    instance.s[i] = [read_ints(data)]
+                    for j in range(instance.n - 1):
+                        instance.s[i].append(read_ints(data))
+
+            if problemType == "Jobshop":
+                instance.r = [read_ints(data)]
+                for j in range(instance.n - 1):
+                    instance.r.append(read_ints(data))
+        else:
             instance.o = read_ints(data)
             instance.p = [[] for j in range(instance.n)]
             for j in range(instance.n):
@@ -63,37 +88,6 @@ def dataentry(filename, problemType: str) -> struct:
                     x = read_ints(data)
                     for i in range(instance.g):
                         instance.p[j][k].append(x[i])
-        else:
-            # 공통 처리: Flexiblejobshop를 제외한 problemType에 해당
-            # 'Flowshop','Non-Flowshop','Hybridflowshop','Distributedflowshop',
-            # 'Nowaitflowshop','Setupflowshop','Tardinessflowshop','TCTflowshop',
-            # 'Jobshop','Openshop','Parallelmachine'
-            instance.p = [read_ints(data)]
-            for j in range(instance.n - 1):
-                instance.p.append(read_ints(data))
-
-            # 추가적인 특성에 따른 세부 처리
-            match problemType:
-                case "Distributedflowshop":
-                    instance.f = int(data.readline().strip().split()[0])
-
-                case "Hybridflowshop":
-                    instance.m = read_ints(data)
-
-                case "Tardinessflowshop":
-                    instance.d = read_ints(data)
-
-                case "Setupflowshop":
-                    for i in range(instance.g):
-                        instance.s.append([])
-                        instance.s[i] = [read_ints(data)]
-                        for j in range(instance.n - 1):
-                            instance.s[i].append(read_ints(data))
-
-                case "Jobshop":
-                    instance.r = [read_ints(data)]
-                    for j in range(instance.n - 1):
-                        instance.r.append(read_ints(data))
 
     print(instance.n)
     print(instance.g)
