@@ -6,4 +6,6 @@
 # uv run main.py Hybridflowshop CP 3600 1 1440 CPLEX 8 ../data/Hybridflowshop ../Outputs/Hybridflowshop/20250716_CPO_8_3600s
 # uv run main.py Tardinessflowshop CP 3600 1 135 CPLEX 8 ../data/Tardinessflowshop ../Outputs/Tardinessflowshop/20250919_1q_CPO_8_3600s
 # uv run main.py Tardinessflowshop CP 600 1 135 CPLEX 8 ../data/Tardinessflowshop ../Outputs/Tardinessflowshop/20251110_1q_CPO_8_600s
-uv run main.py Hybridflowshop CP 600 1 360 CPLEX 8 ../data/Hybridflowshop ../Outputs/Hybridflowshop/20251112_1q_CPO_8_600s
+# uv run main.py Hybridflowshop CP 600 1 360 CPLEX 8 ../data/Hybridflowshop ../Outputs/Hybridflowshop/20251112_1q_CPO_8_600s
+# uv run main.py Tardinessflowshop CP 600 1 90 CPLEX 8 ../data/Tardinessflowshop ../Outputs/Tardinessflowshop/20260111_1_90_CPO_8_600s
+uv run main.py Tardinessflowshop CP 600 1 90 CPLEX 1 ../data/Tardinessflowshop ../Outputs/Tardinessflowshop/20260112_1_90_CPO_1_600s
