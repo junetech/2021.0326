@@ -66,7 +66,7 @@ for benchmark in range(int(First), int(Last) + 1):
             continue
     try:
         n, g, Time, LB, UB, GAP = models.main(
-            int(computational_time),
+            float(computational_time),
             benchmark,
             problem_name,
             modelType,
