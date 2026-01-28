@@ -1,3 +1,4 @@
+from pathlib import PurePath
 from typing import TextIO
 
 
@@ -39,20 +40,27 @@ def read_ints(data: TextIO) -> list[int]:
     return [int(x) for x in data.readline().strip().split()]
 
 
-def dataentry(filename, problemType: str) -> struct:
-    """data entry
+def dataentry(file_path: str | PurePath, problemType: str, ff2020_format: bool = False) -> struct:
+    """Creates an instance structure by reading data from a file.
 
     Args:
-        filename
-        problemType (str)
+        file_path (str | PurePath): Path to the input file.
+        problemType (str): Type of the problem.
+        ff2020_format (bool, optional): Flag indicating if the input file follows the FF 2020 format.
+            Defaults to False.
 
     Returns:
-        struct: instance
+        struct: Instance structure populated with data from the file.
     """
     instance = struct()
-    with open(filename, "r") as data:
-        instance.n = int(data.readline().strip().split()[0])
-        instance.g = int(data.readline().strip().split()[0])
+    with open(file_path, "r") as data:
+        if ff2020_format:
+            n_g = read_ints(data)
+            instance.n = n_g[0]
+            instance.g = n_g[1]
+        else:
+            instance.n = int(data.readline().strip().split()[0])
+            instance.g = int(data.readline().strip().split()[0])
 
         if problemType != "Flexiblejobshop":
             if problemType == "Distributedflowshop":
@@ -64,9 +72,17 @@ def dataentry(filename, problemType: str) -> struct:
             if problemType == "Tardinessflowshop":
                 instance.d = read_ints(data)
 
-            instance.p = [read_ints(data)]
-            for j in range(instance.n - 1):
-                instance.p.append(read_ints(data))
+            if ff2020_format:
+                p_transpose = [read_ints(data)]
+                for i in range(instance.g - 1):
+                    p_transpose.append(read_ints(data))
+                instance.p = [[] for j in range(instance.n)]
+                for j in range(instance.n):
+                    instance.p[j] = [p_transpose[i][j] for i in range(instance.g)]
+            else:
+                instance.p = [read_ints(data)]
+                for j in range(instance.n - 1):
+                    instance.p.append(read_ints(data))
 
             if problemType == "Setupflowshop":
                 for i in range(instance.g):

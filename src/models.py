@@ -26,11 +26,12 @@ def main(
     NThreads,
     address,
     output,
+    ff2020_format=False,
 ):
     print("\n\n Instance: ", benchmark)
     file_path = Path(address) / f"{benchmark}.txt"
     print(file_path)
-    instance = datareading.dataentry(file_path, problemType)
+    instance = datareading.dataentry(file_path, problemType, ff2020_format=ff2020_format)
     # The OpenStack does not allow subdirectories for instances
 
     time_start = time.perf_counter()

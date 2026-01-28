@@ -44,6 +44,9 @@ except:
     output = current_dir.parent / "Results"
 output.mkdir(parents=True, exist_ok=True)
 
+ff2020_format = False
+if "ff2020" in str(address).lower():
+    ff2020_format = True
 
 for benchmark in range(int(First), int(Last) + 1):
     if modelType == "CP":
@@ -74,6 +77,7 @@ for benchmark in range(int(First), int(Last) + 1):
             NThreads,
             address,
             output,
+            ff2020_format=ff2020_format,
         )
         result = open(
             Path(output)
